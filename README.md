@@ -40,78 +40,80 @@ void coordinate2dec()
     
   // Extract latitude from string
   String lat_degree = "";
-  for(i=17;i<19;i++) lat_degree+=gpsString[i];
+  for(i = 17; i < 19; i++) lat_degree += gpsString[i];
   String lat_minut = "";
-  for(i=19;i<27;i++) lat_minut+=gpsString[i];
+  for(i = 19; i < 27; i++) lat_minut += gpsString[i];
     
   // Extract longitude from string
   String long_degree = "";
-  for(i=30;i<33;i++) long_degree+=gpsString[i];
+  for(i = 30; i < 33; i++) long_degree += gpsString[i];
   String long_minut = "";
-  for(i=33;i<41;i++) long_minut+=gpsString[i];
-  float minut= lat_minut.toFloat();
-  minut=minut/60.0;
-  float degree=lat_degree.toFloat();
+  for(i = 33; i < 41; i++) long_minut += gpsString[i];
+  float minut = lat_minut.toFloat();
+  minut = minut/60.0;
+  float degree = lat_degree.toFloat();
   Serial.println(100000 * (degree + minut));
-  latitude=degree+minut;
+  latitude = degree+minut;
      
   minut = long_minut.toFloat();
   minut = minut/60.0;
   degree = long_degree.toFloat();
   Serial.println(100000 * (degree + minut));
-  logitude = degree+minut;
+  logitude = degree + minut;
 }
 
 void gpsEvent()
 {
-  gpsString="";
+  gpsString = "";
   while(1)
   {
-   while (GPS_Serial.available()>0)                //Serial incoming data from GPS
-   {
-    char inChar = (char)GPS_Serial.read();
-     gpsString+= inChar;                    //store incoming data from GPS to temporary string str[]
-     i++;
-     if (i < 7)                      
-     {
-      if(gpsString[i-1] != test[i-1])       //check for right string
-      {
-        i=0;
-        gpsString="";
-      }
-     }
-    if(inChar=='\r')
+    // Serial incoming data from GPS
+    while (GPS_Serial.available()>0)                
     {
-     if(i>65)
-     {
-       gps_status=1;
-       break;
-     }
-     else
-     {
-       i=0;
-     }
+      char inChar = (char)GPS_Serial.read();
+      // Store incoming data from GPS to temporary string str[]
+      gpsString+= inChar;                    
+      i++;
+      if (i < 7)                      
+      {
+        // Check for right string
+        if(gpsString[i-1] != test[i-1])       
+        {
+          i = 0;
+          gpsString = "";
+        }
+      }
+      if(inChar=='\r')
+      {
+        if(i>65)
+        {
+          gps_status=1;
+          break;
+        }
+        else
+        {
+          i=0;
+        }
+      }
     }
-  }
-   if(gps_status)
-    break;
+    if(gps_status) break;
   }
 }
 
 void get_gps()
 {
-   gps_status=0;
-   int x=0;
-   while(gps_status==0)
-   {
+  gps_status = 0;
+  int x = 0;
+  while(gps_status == 0)
+  {
     gpsEvent();
-    int str_lenth=i;
-    latitude="";
-    logitude="";
+    int str_lenth = i;
+    latitude = "";
+    logitude = "";
     coordinate2dec();
-        i=0;x=0;
-    str_lenth=0;
-   }
+    i = 0; x = 0;
+    str_lenth = 0;
+  }
 }
 
 void show_coordinate()
@@ -128,9 +130,7 @@ void loop()
   while(k<1000)
   {
     k++;
-    //GPS_Serial.begin(9600);
     get_gps();
-    //GPS_Serial.end();
     show_coordinate();
     delay(1000);
   }
