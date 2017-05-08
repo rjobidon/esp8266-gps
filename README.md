@@ -1,3 +1,5 @@
+![Photo](Photo.jpg)
+
 # ESP-8266 GPS
 
 The VK2828U7G5LF is a GPS module with an integrated antenna, receiver and decoder. It can talk with the ESP-8266 through serial communication and provides very useful information on geolocation: latitude, longitude, altitude, universal date and time.
@@ -136,5 +138,3 @@ void loop()
   }
 }
 ```
-
-![Photo](Photo.jpg)
